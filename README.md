@@ -2,7 +2,7 @@
 
 Atelier de electronică în browser: montezi circuite pe un breadboard virtual cu plăci ESP32, scrii cod Arduino și îl rulezi în simulare. Merge pe telefon și pe calculator.
 
-**Site-ul:** https://danisefumati.github.io/mester/
+**Site-ul:** https://danisefumati.github.io/Mester/
 
 ## Ce are
 
