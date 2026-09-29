@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fbfcfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16201c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2226%22%20height%3D%2226%22%20rx%3D%226%22%20fill%3D%22%23b85b16%22%2F%3E%3Cpath%20d%3D%22M9%2022V10l7%207%207-7v12%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%229%22%20cy%3D%2222%22%20r%3D%222%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2223%22%20cy%3D%2222%22%20r%3D%222%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E">
+<title>Meșter ESP32</title>
+<meta name="description" content="Atelier de electronică în browser: breadboard, zeci de componente, cod Arduino pentru ESP32 și simulare care rulează codul.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="stil/codemirror.css">
+<link rel="stylesheet" href="stil/aplicatie.css">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="aplicatie" id="aplicatie" data-vedere="schema">
+  <header class="bara-sus">
+    <div class="marca">
+      <svg class="sigla" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="3" y="3" width="26" height="26" rx="6" style="fill:var(--accent)"/>
+        <path d="M9 22V10l7 7 7-7v12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9" cy="22" r="2" fill="#fff"/><circle cx="23" cy="22" r="2" fill="#fff"/>
+      </svg>
+      <span class="nume-marca">Meșter</span><span class="sub">ESP32</span>
+    </div>
+    <input class="nume-proiect" id="nume-proiect" aria-label="Numele proiectului" value="Proiect nou" maxlength="80">
+    <span class="stare-salvare" id="stare-salvare">Salvat local</span>
+    <div class="spatiator"></div>
+    <div class="grup-sim">
+      <button class="btn principal btn-porneste" id="btn-porneste" title="Pornește simularea (F5)"></button>
+      <button class="btn icon" id="btn-pauza" title="Pauză" disabled></button>
+      <button class="btn icon fantoma" id="btn-sunet" title="Sunetul simulării: pornit" aria-pressed="true"></button>
+      <div class="indicator-sim" id="indicator-sim"><span>Timp simulat</span><b id="timp-sim">0,000 s</b></div>
+    </div>
+    <div class="separator-v"></div>
+    <div class="grup-unelte-sus" style="display:flex;gap:6px">
+      <button class="btn icon fantoma" id="btn-anuleaza" title="Anulează (Ctrl+Z)"></button>
+      <button class="btn icon fantoma" id="btn-refa" title="Refă (Ctrl+Y)"></button>
+    </div>
+    <div class="meniu-buton">
+      <button class="btn icon" id="btn-meniu" title="Meniu" aria-haspopup="true" aria-expanded="false"></button>
+      <div class="meniu ascuns" id="meniu-principal" role="menu"></div>
+    </div>
+  </header>
+
+  <aside class="panou-piese" id="panou-piese" aria-label="Biblioteca de piese">
+    <div class="foaie-piese-cap"><h2>Adaugă piese</h2><button class="btn icon fantoma" id="btn-inchide-piese" title="Închide"></button></div>
+    <div class="cautare-piese">
+      <div class="camp-cautare"><span id="icon-cautare"></span><input class="camp" id="cauta-piese" type="search" placeholder="Caută: led, dht22, oled…" autocomplete="off"></div>
+    </div>
+    <div class="lista-piese" id="lista-piese"></div>
+  </aside>
+
+  <main class="spatiu" id="spatiu">
+    <svg class="scena" id="scena" xmlns="http://www.w3.org/2000/svg" aria-label="Planșa de lucru">
+      <defs id="scena-defs"></defs>
+      <g id="lume">
+        <rect id="fundal-mat" x="-20000" y="-20000" width="40000" height="40000" fill="url(#grila-mica)"/>
+        <rect id="fundal-mat-mare" x="-20000" y="-20000" width="40000" height="40000" fill="url(#grila-mare)"/>
+        <g id="strat-breadboard"></g>
+        <g id="strat-comp"></g>
+        <g id="strat-fire"></g>
+        <g id="strat-sus"></g>
+      </g>
+    </svg>
+    <div class="strat-html" id="strat-html"></div>
+    <div class="bara-plansa" id="bara-plansa">
+      <button class="btn" id="btn-deschide-piese"></button>
+      <span class="eticheta-mod" id="eticheta-mod"><span class="punct"></span><span id="text-mod">Editare</span></span>
+    </div>
+    <div class="unelte-plansa">
+      <button class="btn icon" id="btn-zoom-plus" title="Mărește"></button>
+      <button class="btn icon" id="btn-zoom-minus" title="Micșorează"></button>
+      <button class="btn icon" id="btn-zoom-tot" title="Arată tot"></button>
+    </div>
+    <div class="info-plansa" id="info-plansa"></div>
+    <div class="plansa-goala ascuns" id="plansa-goala">
+      <div class="card">
+        <h2>Planșa e goală</h2>
+        <p>Adaugă o placă ESP32 și o breadboard din lista de piese, sau pornește de la un proiect gata montat.</p>
+        <div class="actiuni">
+          <button class="btn principal" id="btn-gol-exemple">Deschide un exemplu</button>
+          <button class="btn" id="btn-gol-piese">Adaugă piese</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="panou-dreapta" id="panou-dreapta">
+    <div class="file" role="tablist" id="file"></div>
+    <div class="continut-file">
+      <div class="pagina" id="pagina-cod" data-pagina="cod">
+        <div class="bara-pagina" id="bara-cod"></div>
+        <div class="gazda-editor" id="gazda-editor"></div>
+        <div class="eroare-compilare ascuns" id="eroare-compilare"></div>
+      </div>
+      <div class="pagina ascuns" id="pagina-serial" data-pagina="serial">
+        <div class="bara-pagina" id="bara-serial"></div>
+        <div class="iesire-serial" id="iesire-serial" tabindex="0" aria-live="polite"></div>
+        <div class="plotter ascuns" id="plotter"><canvas id="canvas-plotter"></canvas><div class="legenda-plotter" id="legenda-plotter"></div></div>
+        <form class="intrare-serial" id="form-serial">
+          <input class="camp" id="intrare-serial" placeholder="Trimite text către placă…" autocomplete="off">
+          <button class="btn" type="submit" id="btn-trimite-serial">Trimite</button>
+        </form>
+      </div>
+      <div class="pagina ascuns" id="pagina-verificare" data-pagina="verificare">
+        <div class="bara-pagina" id="bara-verificare"></div>
+        <div class="lista-probleme" id="lista-probleme"></div>
+      </div>
+      <div class="pagina ascuns" id="pagina-web" data-pagina="web">
+        <div class="bara-pagina" id="bara-web"></div>
+        <div class="stare-web" id="stare-web" role="status"></div>
+        <div class="gazda-web" id="gazda-web">
+          <iframe class="cadru-web" id="cadru-web" title="Pagina servită de placă" sandbox="allow-scripts allow-forms"></iframe>
+          <div class="mesaj-web ascuns" id="mesaj-web"></div>
+        </div>
+        <div class="jurnal-web ascuns" id="jurnal-web"></div>
+      </div>
+      <div class="pagina ascuns" id="pagina-asistent" data-pagina="asistent">
+        <div class="bara-pagina bara-asistent" id="bara-asistent"></div>
+        <div class="conversatie" id="conversatie"></div>
+        <form class="scrie-asistent" id="form-asistent">
+          <textarea id="text-asistent" rows="1" placeholder="Descrie ce vrei să construiești…"></textarea>
+          <button class="btn principal" type="submit" id="btn-trimite-asistent">Trimite</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <nav class="navigare-jos" id="navigare-jos" aria-label="Vederi"></nav>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+
+<script src="nucleu/util.js"></script>
+<script src="nucleu/proiect.js"></script>
+<script src="nucleu/stocare.js"></script>
+
+<script src="simulare/lexer.js"></script>
+<script src="simulare/parser.js"></script>
+<script src="simulare/generator-js.js"></script>
+<script src="simulare/ajutoare.js"></script>
+<script src="simulare/fonturi-date.js"></script>
+<script src="simulare/sunet.js"></script>
+
+<script src="electric/retea.js"></script>
+<script src="electric/rezolvitor.js"></script>
+
+<script src="componente/registru.js"></script>
+<script src="componente/desen.js"></script>
+<script src="componente/placi.js"></script>
+<script src="componente/breadboard.js"></script>
+<script src="componente/alimentare.js"></script>
+<script src="componente/pasive.js"></script>
+<script src="componente/semiconductoare.js"></script>
+<script src="componente/lumini.js"></script>
+<script src="componente/intrari.js"></script>
+<script src="componente/senzori.js"></script>
+<script src="componente/afisaje.js"></script>
+<script src="componente/motoare.js"></script>
+<script src="componente/audio.js"></script>
+<script src="componente/comunicatii.js"></script>
+<script src="componente/instrumente.js"></script>
+
+<script src="simulare/simulare.js"></script>
+<script src="simulare/api/nucleu.js"></script>
+<script src="simulare/grafica.js"></script>
+<script src="simulare/api/comunicatii.js"></script>
+<script src="simulare/api/afisaje.js"></script>
+<script src="simulare/api/senzori.js"></script>
+<script src="simulare/api/iesiri.js"></script>
+<script src="simulare/api/audio.js"></script>
+<script src="simulare/api/rtc.js"></script>
+<script src="simulare/api/rfid.js"></script>
+<script src="simulare/api/ir.js"></script>
+<script src="simulare/api/gps.js"></script>
+<script src="simulare/api/stocare.js"></script>
+<script src="simulare/api/bluetooth.js"></script>
+<script src="simulare/api/retea.js"></script>
+<script src="simulare/api/json.js"></script>
+<script src="simulare/api/freertos.js"></script>
+
+<script src="electric/verificari.js"></script>
+<script src="cod/generator.js"></script>
+<script src="cod/exemple.js"></script>
+<script src="cod/exemple-afisaje.js"></script>
+<script src="cod/exemple-sunet.js"></script>
+<script src="cod/exemple-comunicatii.js"></script>
+<script src="cod/exemple-retea.js"></script>
+<script src="cod/exemple-instrumente.js"></script>
+
+<script src="interfata/icoane.js"></script>
+<script src="interfata/dialog.js"></script>
+<script src="interfata/spatiu.js"></script>
+<script src="interfata/piese.js"></script>
+<script src="interfata/inspector.js"></script>
+<script src="interfata/editor.js"></script>
+<script src="interfata/serial.js"></script>
+<script src="interfata/browser.js"></script>
+<script src="interfata/verificare.js"></script>
+<script src="ai/furnizori.js"></script>
+<script src="interfata/asistent.js"></script>
+<script src="interfata/proiecte.js"></script>
+<script src="interfata/aplicatie.js"></script>
+</body>
+</html>

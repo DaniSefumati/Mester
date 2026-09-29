@@ -1,0 +1,62 @@
+/* Meșter — iconițe SVG (linii de 1,8 px pe o grilă de 24). */
+(function (M) {
+  'use strict';
+  const I = {
+    porneste: '<path d="M7.5 4.8v14.4a.8.8 0 0 0 1.2.7l11.3-7.2a.8.8 0 0 0 0-1.4L8.7 4.1a.8.8 0 0 0-1.2.7z" fill="currentColor" stroke="none"/>',
+    opreste: '<rect x="6" y="6" width="12" height="12" rx="1.8" fill="currentColor" stroke="none"/>',
+    pauza: '<rect x="6.5" y="5" width="3.6" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="13.9" y="5" width="3.6" height="14" rx="1" fill="currentColor" stroke="none"/>',
+    anuleaza: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
+    refa: '<path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/>',
+    meniu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    minus: '<path d="M5 12h14"/>',
+    tot: '<path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/>',
+    cauta: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+    sageata: '<path d="m9 6 6 6-6 6"/>',
+    inchide: '<path d="M6 6l12 12M18 6 6 18"/>',
+    cod: '<path d="m8.5 7-5 5 5 5M15.5 7l5 5-5 5"/>',
+    serial: '<rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="m7 9.5 3 2.5-3 2.5M12.5 15h4.5"/>',
+    verificare: '<path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12.2 2.2 2.2 4.3-4.6"/>',
+    asistent: '<path d="M12 3.5l1.8 5 5 1.8-5 1.8-1.8 5-1.8-5-5-1.8 5-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>',
+    cip: '<rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9.5 6V3M14.5 6V3M9.5 21v-3M14.5 21v-3M6 9.5H3M6 14.5H3M21 9.5h-3M21 14.5h-3"/><rect x="9.5" y="9.5" width="5" height="5" rx=".5"/>',
+    piese: '<path d="M12 3 3.5 7.3v9.4L12 21l8.5-4.3V7.3z"/><path d="M3.5 7.3 12 11.7l8.5-4.4M12 11.7V21"/>',
+    roteste: '<path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4.5v4.8h-4.8"/>',
+    sterge: '<path d="M4 7h16M10 11v6M14 11v6M6 7l.9 11.2A2 2 0 0 0 8.9 20h6.2a2 2 0 0 0 2-1.8L18 7M9.5 7V4.5h5V7"/>',
+    duplica: '<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.5a2 2 0 0 0 2 2h2.5"/>',
+    dosar: '<path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    descarca: '<path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/>',
+    incarca: '<path d="M12 20V9M7 13.5l5-5 5 5M5 4h14"/>',
+    luna: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+    soare: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+    bagheta: '<path d="m4 20 11.5-11.5"/><path d="M14 3.5l.9 1.9 1.9.9-1.9.9-.9 1.9-.9-1.9-1.9-.9 1.9-.9zM19 11l.6 1.3 1.3.6-1.3.6L19 14.8l-.6-1.3-1.3-.6 1.3-.6z"/>',
+    grafic: '<path d="M3.5 20h17"/><path d="M4.5 16.5l4.5-5.5 4 3 6.5-8"/>',
+    eroare: '<circle cx="12" cy="12" r="8.5"/><path d="m9 9 6 6M15 9l-6 6"/>',
+    avert: '<path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4.2M12 17h.01"/>',
+    info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8h.01"/>',
+    ok: '<circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.3 2.4 2.4 5-5.2"/>',
+    trimite: '<path d="M4.5 11.5 20 4l-6.5 16-2.8-6.2z"/><path d="m10.7 13.8 4-4"/>',
+    carte: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3M9 7.5h6"/>',
+    nor: '<path d="M7 18.5h10a4.2 4.2 0 0 0 .6-8.4A6 6 0 0 0 6.2 9.6 4.5 4.5 0 0 0 7 18.5z"/>',
+    fir: '<path d="M4.5 17.5c4.5 0 4.5-11 7.5-11s3 11 7.5 11"/><circle cx="4.5" cy="17.5" r="1.8"/><circle cx="19.5" cy="17.5" r="1.8"/>',
+    nou: '<path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5M12 11.5v6M9 14.5h6"/>',
+    salveaza: '<path d="M5 3.5h11l3.5 3.5v12a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5z"/><path d="M8 3.5v5h7v-5M8 20.5v-6h8v6"/>',
+    copiaza: '<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.5a2 2 0 0 0 2 2h2.5"/>',
+    goleste: '<path d="M4 20h16M7 16 17.5 5.5a2 2 0 0 1 2.8 2.8L9.8 18.8 5 20l1.2-4.8"/>',
+    lista: '<path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.8" cy="6.5" r="1.1"/><circle cx="4.8" cy="12" r="1.1"/><circle cx="4.8" cy="17.5" r="1.1"/>',
+    viteza: '<path d="M4.5 16.5a8 8 0 1 1 15 0"/><path d="m12 13 3.5-4.5"/><circle cx="12" cy="13" r="1.2"/>',
+    placa: '<rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M7 9h4v4H7zM14 9h3M14 12h3M7 16h10"/>',
+    legatura: '<path d="M10 14a4.5 4.5 0 0 0 6.4 0l2.8-2.8a4.5 4.5 0 0 0-6.4-6.4L11.5 6"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-2.8 2.8a4.5 4.5 0 0 0 6.4 6.4L12.5 18"/>',
+    oglinda: '<path d="M12 3v18M8 7 4 12l4 5M16 7l4 5-4 5"/>',
+    sunet: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+    mut: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/>',
+    glob: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5s-1.1 6.1-3.4 8.5c-2.3-2.4-3.4-5.2-3.4-8.5s1.1-6.1 3.4-8.5z"/>',
+    inapoi: '<path d="M19 12H5.5M11 6l-6 6 6 6"/>',
+    reincarca: '<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4.2h-4.2"/>',
+    setari: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/>',
+    cheie: '<circle cx="8" cy="14.5" r="4"/><path d="m11 11.5 8.5-8.5M16 6l2.5 2.5M13.5 8.5l2 2"/>'
+  };
+  M.icon = function (nume, clasa) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"' + (clasa ? ' class="' + clasa + '"' : '') + '>' + (I[nume] || '') + '</svg>';
+  };
+  M.icoane = I;
+})(window.M = window.M || {});
